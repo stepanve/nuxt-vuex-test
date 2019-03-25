@@ -1,23 +1,23 @@
 import moment from '~/plugins/moment'
 
-export const state = () => ({
+const state = () => ({
   isLoggedIn: false,
   user: state => (state.user ? Object.assign({ likes: [] }, state.user) : null)
 })
 
-export const getters = {
+const getters = {
   isLoggedIn: state => state.isLoggedIn,
   user: state => state.user
 }
 
-export const mutations = {
+const mutations = {
   setUser(state, { user }) {
     state.user = user
     state.user.isLoggedIn = true
   }
 }
 
-export const actions = {
+const actions = {
   async login({ commit }, { id }) {
     const user = await this.$axios.$get(`/users/${id}.json`)
     if (!user.id) throw new Error('Invalid user')
@@ -40,4 +40,11 @@ export const actions = {
     const newUser = await this.$axios.$put(`/users/${user.id}`.json, user)
     commit('setUser', { user: newUser })
   }
+}
+
+export default {
+  state,
+  getters,
+  mutations,
+  actions
 }
